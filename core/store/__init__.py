@@ -9,7 +9,7 @@ class BorrowEvent:
 
 class Book:
     def __init__(self, ident: int, title: str, author: str, borrowed: Optional[BorrowEvent] = None):
-        self.id = ident
+        self.ident = ident
         self.title = title
         self.author = author
         self.borrowed = borrowed
