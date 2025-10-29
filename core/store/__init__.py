@@ -14,6 +14,12 @@ class Book:
         self.author = author
         self.borrowed = borrowed
 
+class BookAlreadyExists(Exception):
+    pass
+
+class BookNotFound(Exception):
+    pass
+
 class Store(ABC):
     @abstractmethod
     def add_book(self, book: Book):
