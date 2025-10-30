@@ -39,10 +39,10 @@ pytest
 
 ## TODOs
 ### Response data
-Right now, the server generally returns nothing on a successful operation. It should probably return something, like the ID of the added book or some blanket "OK".
+Right now, the server generally returns no data on a successful operation. It should probably return something, like the ID of the added book or some blanket "OK".
 
 ### Error handling
-Right now, if the client does something like add a book with an existing ID, the server responds with `500 Internal Server Error`. We should really respond with something more informative!
+There could be more informative errors than `500 Internal Server Error` in various situations, like for example when the SQL connection is lost.
 
 ### Integration tests
 The only tests right now are unit tests. There are unit tests for the `SqlStore` against SQLite, and there are unit tests for the FastAPI server (with an in memory store that **should** be thread safe).

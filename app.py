@@ -1,8 +1,8 @@
 from datetime import datetime
 import core
-from core.store import Store
+from core.store import BookAlreadyExists, BookNotFound, Store
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 class Book(BaseModel):
@@ -22,7 +22,10 @@ def create_app(store: Store):
 
     @app.post("/book")
     async def add_book(book: Book):
-        store.add_book(core.store.Book(book.ident, book.title, book.author))
+        try:
+            store.add_book(core.store.Book(book.ident, book.title, book.author))
+        except BookAlreadyExists:
+            raise HTTPException(status_code=409, detail="Book already exists")
 
     @app.put("/book/{book_id}")
     async def update_book(book_id: int, borrow: Borrow):
@@ -31,11 +34,17 @@ def create_app(store: Store):
         if borrow.borrowed is not None:
             borrow_event = core.store.BorrowEvent(borrow.borrowed.who, borrow.borrowed.when)
 
-        store.update_book(book_id, borrow_event)
+        try:
+            store.update_book(book_id, borrow_event)
+        except BookNotFound:
+            raise HTTPException(status_code=404, detail="Book not found")
 
     @app.delete("/book/{book_id}")
     async def delete_book(book_id: int):
-        return store.remove_book(book_id)
+        try:
+            store.remove_book(book_id)
+        except BookNotFound:
+            raise HTTPException(status_code=404, detail="Book not found")
 
     @app.get("/book")
     async def list_books():
