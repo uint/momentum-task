@@ -13,7 +13,7 @@ postgres_pass = os.environ.get('POSTGRES_PASS')
 if postgres_host is None:
     store = InMemoryStore()
 else:
-    engine = create_engine("postgresql://{postgres_user}:{postgres_pass}@{postgres_host}/{postgres_db}", echo=True)
+    engine = create_engine(f"postgresql://{postgres_user}:{postgres_pass}@{postgres_host}/{postgres_db}", echo=True)
     store = SqlStore(engine)
 
 app = create_app(store)

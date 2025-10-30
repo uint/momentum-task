@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: .
+    restart: always
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: momentum-task
+      POSTGRES_USER: my_user
+      POSTGRES_PASS: turn_this_into_secret
+    ports:
+      - 80:80
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: momentum-task
+      POSTGRES_USER: my_user
+      POSTGRES_PASSWORD: turn_this_into_secret
+    volumes:
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+volumes:
+  db-data:

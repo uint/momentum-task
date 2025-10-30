@@ -24,6 +24,7 @@ mdurl==0.1.2
 packaging==25.0
 pipreqs==0.4.13
 pluggy==1.6.0
+psycopg2-binary==2.9.11
 pydantic==2.12.3
 pydantic_core==2.41.4
 Pygments==2.19.2
