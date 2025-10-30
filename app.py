@@ -3,15 +3,15 @@ import core
 from core.store import BookAlreadyExists, BookNotFound, Store
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class Book(BaseModel):
-    ident: int
+    ident: int = Field(100000, ge=0, lt=1000000)
     title: str
     author: str
 
 class BorrowInner(BaseModel):
-    who: int
+    who: int = Field(100000, ge=0, lt=1000000)
     when: datetime
 
 class Borrow(BaseModel):
