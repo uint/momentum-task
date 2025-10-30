@@ -7,12 +7,24 @@ class BorrowEvent:
         self.who = who
         self.when = when
 
+    def __repr__(self):
+        return f'BorrowEvent({self.who}, "{self.when}")'
+    
+    def __eq__(self, other) -> bool:
+        return (self.who, self.when) == (other.who, other.when)
+
 class Book:
     def __init__(self, ident: int, title: str, author: str, borrowed: Optional[BorrowEvent] = None):
         self.ident = ident
         self.title = title
         self.author = author
         self.borrowed = borrowed
+
+    def __repr__(self):
+        return f'Book({self.ident}, "{self.title}", "{self.author}", {self.borrowed})'
+
+    def __eq__(self, other) -> bool:
+        return (self.ident, self.title, self.author, self.borrowed) == (other.ident, other.title, other.author, other.borrowed)
 
 class BookAlreadyExists(Exception):
     pass

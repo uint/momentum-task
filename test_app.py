@@ -1,14 +1,11 @@
-from time import sleep
 from fastapi.testclient import TestClient
 import pytest
-from sqlalchemy import create_engine
 
 from app import create_app
 from core.store.in_mem import InMemoryStore
 
 @pytest.fixture()
 def client():
-    # TODO: run this against sqlite via SQLAlchemy?
     app = create_app(InMemoryStore())
     client = TestClient(app)
     yield client
