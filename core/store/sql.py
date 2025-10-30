@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import delete, update, Engine, ForeignKey, select, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, relationship
 
@@ -34,13 +35,17 @@ class SqlStore(Store):
     def add_book(self, book: Book):
         with Session(self.engine) as session:
             book_row: BookModel = BookModel(ident=book.ident, title=book.title, author=book.author)
-            session.add(book_row)
-            session.commit()
+            try:
+                session.add(book_row)
+                session.commit()
+            except IntegrityError:
+                raise BookAlreadyExists
 
     def remove_book(self, ident: int):
         with Session(self.engine) as session:
-            stmt = delete(BookModel).where(BookModel.ident == ident)
-            session.execute(stmt)
+            affected_rows = session.query(BookModel).filter(BookModel.ident==ident).delete()
+            if affected_rows == 0:
+                raise BookNotFound
             session.commit()
 
     def list_books(self) -> List[Book]:
@@ -58,6 +63,7 @@ class SqlStore(Store):
             borrowed_time = None
         
         with Session(self.engine) as session:
-            stmt = update(BookModel).where(BookModel.ident == ident).values(borrowed_to=borrowed_to, borrowed_time=borrowed_time)
-            session.execute(stmt)
+            affected_rows = session.query(BookModel).filter(BookModel.ident==ident).update(values={"borrowed_to": borrowed_to, "borrowed_time": borrowed_time})
+            if affected_rows == 0:
+                raise BookNotFound
             session.commit()
