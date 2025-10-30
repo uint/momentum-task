@@ -31,13 +31,16 @@ Once you have the thing running, you can go to `http://localhost/docs` and play 
 
 ## Running tests
 
-Install pytest, and then simply run:
+Make sure pytest is installed, and then simply run:
 
 ```
 pytest
 ```
 
 ## TODOs
+### Response data
+Right now, the server generally returns nothing on a successful operation. It should probably return something, like the ID of the added book or some blanket "OK".
+
 ### Error handling
 Right now, if the client does something like add a book with an existing ID, the server responds with `500 Internal Server Error`. We should really respond with something more informative!
 
