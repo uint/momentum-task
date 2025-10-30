@@ -1,7 +1,6 @@
 from datetime import datetime
 import core
 from core.store import Store
-from core.store.in_mem import InMemoryStore
 
 from fastapi import FastAPI
 from pydantic import BaseModel

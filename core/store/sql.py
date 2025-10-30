@@ -1,10 +1,10 @@
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import delete, update, Engine, ForeignKey, select, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, relationship
+from sqlalchemy import Engine, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 
 from . import BookAlreadyExists, BookNotFound, Store, Book, BorrowEvent
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 class Base(DeclarativeBase):
     pass
